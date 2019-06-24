@@ -4,27 +4,27 @@ import {IUser} from "./user";
 import {IMove} from "./move";
 
 export interface IGame extends Document {
-	winner: IUser;
-	looser: IUser;
-	moves: {
-		byWinner: IMove,
-		byLooser: IMove
-	};
+	player1: IUser;
+	player2: IUser;
+	rounds: {
+		byPlayer1: IMove | null,
+		byPlayer2: IMove | null
+	}[];
 	createdAt: Date;
 }
 
 export const GameSchema = new Schema({
-	winner: {
+	player1: {
 		type: Schema.Types.ObjectId,
 		ref: "User"
 	},
-	looser: {
+	player2: {
 		type: Schema.Types.ObjectId,
 		ref: "User"
 	},
-	moves: [{
-		byWinner: {type: Schema.Types.ObjectId, ref: "Move"},
-		byLooser: {type: Schema.Types.ObjectId, ref: "Move"}
+	rounds: [{
+		byPlayer1: {type: Schema.Types.ObjectId, ref: "Move"},
+		byPlayer2: {type: Schema.Types.ObjectId, ref: "Move"}
 	}],
 	createdAt: {type: Date, default: Date.now}
 });
