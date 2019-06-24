@@ -1,10 +1,14 @@
 import * as mongoose from "mongoose";
+import {Schema, Document} from "mongoose";
 
-const Schema = mongoose.Schema;
+export interface IMove extends Document {
+	name: string;
+	beats: IMove[];
+}
 
 export const MoveSchema = new Schema({
 	name: {type: String},
 	beats: [{type: Schema.Types.ObjectId, ref: "Move"}]
 });
 
-export const Move = mongoose.model("Move", MoveSchema);
+export const Move = mongoose.model<IMove>("Move", MoveSchema);

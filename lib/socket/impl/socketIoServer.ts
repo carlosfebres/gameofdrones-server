@@ -1,9 +1,10 @@
 import * as SocketIo from "socket.io";
+import {Socket} from "socket.io";
 import {userService} from "../../services/services";
 import {SocketServer} from "../socketServer";
 import {Server} from "http";
 
-export class SocketIoServer implements SocketServer{
+export class SocketIoServer implements SocketServer {
 
 	public socketIo: SocketIo.Server;
 
@@ -14,9 +15,20 @@ export class SocketIoServer implements SocketServer{
 	}
 
 	start() {
-		this.socketIo.on("connection", async client => {
-			client.emit("configure", await userService.configure());
+		this.socketIo.on("connection", async (socket: Socket) => {
+			console.log("Player Connected");
+			socket.emit("configure", await userService.configure());
+			this.playerEvents(socket)
 		});
-		this.socketIo.serveClient();
+		const socketServerPort = 2999;
+		this.socketIo.listen(socketServerPort);
+		console.log("Socket server listening on port " + socketServerPort);
 	}
+
+	playerEvents(socket: Socket) {
+		socket.on("getOnlinePlayers", async () => {
+			socket.emit("onlinePlayers", await userService.getOnlinePlayers());
+		});
+	}
+
 }

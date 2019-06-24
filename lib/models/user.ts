@@ -1,6 +1,11 @@
-import * as mongoose from "mongoose";
+import * as mongoose from 'mongoose';
+import {Schema, Document} from "mongoose";
 
-const Schema = mongoose.Schema;
+export interface IUser extends Document {
+	name: string,
+	socketId: string,
+	playing: boolean
+}
 
 export const UserSchema = new Schema({
 	name: {type: String},
@@ -8,4 +13,4 @@ export const UserSchema = new Schema({
 	playing: {type: Boolean, default: false}
 });
 
-export const User = mongoose.model("User", UserSchema);
+export const User = mongoose.model<IUser>("User", UserSchema);

@@ -1,5 +1,6 @@
 import {UserService} from "../userService";
-import {moveService} from "../services";
+import {moveService, userService} from "../services";
+import {User} from "../../models/user";
 
 export class UserServiceImpl implements UserService {
 
@@ -7,5 +8,9 @@ export class UserServiceImpl implements UserService {
 		return {
 			moves: await moveService.getAllMoves()
 		};
+	}
+
+	getOnlinePlayers() {
+		return User.find({playing: false}).exec();
 	}
 }

@@ -1,6 +1,17 @@
 import * as mongoose from "mongoose";
+import {Document, Schema} from "mongoose";
+import {IUser} from "./user";
+import {IMove} from "./move";
 
-const Schema = mongoose.Schema;
+export interface IGame extends Document {
+	winner: IUser;
+	looser: IUser;
+	moves: {
+		byWinner: IMove,
+		byLooser: IMove
+	};
+	createdAt: Date;
+}
 
 export const GameSchema = new Schema({
 	winner: {
@@ -18,4 +29,4 @@ export const GameSchema = new Schema({
 	createdAt: {type: Date, default: Date.now}
 });
 
-export const Game = mongoose.model("Game", GameSchema);
+export const Game = mongoose.model<IGame>("Game", GameSchema);
